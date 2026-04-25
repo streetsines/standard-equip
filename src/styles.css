@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;400;500;700;800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * STANDARD RENTS — Design System
+ * Pitch (#120F08), Kubota orange (#FF5F00), Linen (#FAF6EE)
+ * Display: Barlow Condensed
+ * Body: Barlow
+ */
+
+@theme inline {
+  --font-display: "Barlow Condensed", Impact, sans-serif;
+  --font-sans: "Barlow", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-pitch: var(--pitch);
+  --color-pitch-elevated: var(--pitch-elevated);
+  --color-amber-brand: var(--amber-brand);
+  --color-amber-deep: var(--amber-deep);
+  --color-linen: var(--linen);
+  --color-linen-muted: var(--linen-muted);
+  --color-steel: var(--steel);
+
+  --shadow-amber: 0 20px 60px -20px color-mix(in oklab, var(--amber-brand) 60%, transparent);
+  --shadow-pitch: 0 30px 80px -20px color-mix(in oklab, var(--pitch) 70%, transparent);
+}
+
+:root {
+  --radius: 0.25rem;
+
+  /* Brand */
+  --pitch: oklch(0.18 0.015 60);              /* #120F08 */
+  --pitch-elevated: oklch(0.24 0.018 60);
+  --amber-brand: #FF5F00;
+  --amber-deep: color-mix(in oklab, var(--amber-brand) 68%, var(--pitch));
+  --linen: oklch(0.97 0.012 80);              /* #FAF6EE */
+  --linen-muted: oklch(0.88 0.012 80);
+  --steel: oklch(0.78 0.005 80);              /* #C8C4B8 */
+
+  /* Semantic — light mode is Linen */
+  --background: var(--linen);
+  --foreground: var(--pitch);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--pitch);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--pitch);
+  --primary: var(--amber-brand);
+  --primary-foreground: var(--pitch);
+  --secondary: var(--pitch);
+  --secondary-foreground: var(--linen);
+  --muted: oklch(0.93 0.008 80);
+  --muted-foreground: oklch(0.42 0.015 60);
+  --accent: var(--amber-brand);
+  --accent-foreground: var(--pitch);
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: var(--linen);
+  --border: oklch(0.86 0.012 80);
+  --input: oklch(0.86 0.012 80);
+  --ring: var(--amber-brand);
+  --sidebar: var(--pitch);
+  --sidebar-foreground: var(--linen);
+  --sidebar-primary: var(--amber-brand);
+  --sidebar-primary-foreground: var(--pitch);
+  --sidebar-accent: var(--pitch-elevated);
+  --sidebar-accent-foreground: var(--linen);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: var(--amber-brand);
+}
+
+.dark {
+  --background: var(--pitch);
+  --foreground: var(--linen);
+  --card: var(--pitch-elevated);
+  --card-foreground: var(--linen);
+  --popover: var(--pitch-elevated);
+  --popover-foreground: var(--linen);
+  --primary: var(--amber-brand);
+  --primary-foreground: var(--pitch);
+  --secondary: var(--pitch-elevated);
+  --secondary-foreground: var(--linen);
+  --muted: oklch(0.26 0.015 60);
+  --muted-foreground: oklch(0.7 0.012 80);
+  --accent: var(--amber-brand);
+  --accent-foreground: var(--pitch);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: var(--amber-brand);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 0.88;
+  }
+
+  ::selection {
+    background: var(--amber-brand);
+    color: var(--pitch);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-mono-tag {
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
+  }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-weight: 200;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    font-size: 0.75rem;
+  }
+
+  .hex-pattern {
+    background-color: var(--pitch);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='28'><path fill-rule='evenodd' fill='rgba(255,95,0,0.18)' transform='translate(4.1,1.85) scale(0.32)' d='M34,0 L68,19 L68,57 L34,76 L0,57 L0,19 Z M0,32 L68,32 L68,44 L0,44 Z'/></svg>");
+  }
+
+  .stripe-warning {
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--amber-brand) 0,
+      var(--amber-brand) 14px,
+      var(--pitch) 14px,
+      var(--pitch) 28px
+    );
+  }
+}
