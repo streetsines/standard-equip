@@ -1,6 +1,7 @@
 import { Outlet, createRootRoute, HeadContent, Scripts, Link } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Logo } from "@/components/Logo";
 import { QuoteDrawer } from "@/components/QuoteDrawer";
 import { buildSeoJsonLdScriptInnerHtml } from "@/lib/jsonLd";
 
@@ -71,6 +72,14 @@ function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* Google tag (gtag.js) — single site-wide tag; measurement ID G-BSC1V3W2E3 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BSC1V3W2E3" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-BSC1V3W2E3');",
+          }}
+        />
         <HeadContent />
         <script
           type="application/ld+json"
