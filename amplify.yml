@@ -1,0 +1,21 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - nvm install 22
+        - nvm use 22
+        - node --version
+        - npm ci
+    build:
+      commands:
+        - "export DEPLOY_TARGET=amplify"
+        - npm run build
+        - test -f .amplify-hosting/deploy-manifest.json
+  artifacts:
+    baseDirectory: .amplify-hosting
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - node_modules/**/*
