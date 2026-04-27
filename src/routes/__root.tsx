@@ -2,6 +2,7 @@ import { Outlet, createRootRoute, HeadContent, Scripts, Link } from "@tanstack/r
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { QuoteDrawer } from "@/components/QuoteDrawer";
+import { buildSeoJsonLdScriptInnerHtml } from "@/lib/jsonLd";
 
 import appCss from "../styles.css?url";
 
@@ -9,7 +10,10 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[color:var(--pitch)] px-4 text-[color:var(--linen)]">
       <div className="max-w-md text-center">
-        <div className="font-mono-tag text-xs text-[color:var(--amber-brand)]">ERROR · 404</div>
+        <div className="flex justify-center">
+          <Logo size={48} variant="amber" className="opacity-95" />
+        </div>
+        <div className="mt-8 font-mono-tag text-xs text-[color:var(--amber-brand)]">ERROR · 404</div>
         <h1 className="mt-3 font-display text-7xl font-extrabold uppercase">Off Route</h1>
         <p className="mt-3 text-sm text-[color:var(--linen)]/60">
           The page you're looking for isn't on the manifest.
@@ -46,13 +50,17 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Standard Rents — Heavy Equipment Rental in Northeast Ohio" },
-      { name: "description", content: "Standard Rents Hub is a professional heavy equipment rental platform for Northeast Ohio." },
-      { property: "og:description", content: "Standard Rents Hub is a professional heavy equipment rental platform for Northeast Ohio." },
-      { name: "twitter:description", content: "Standard Rents Hub is a professional heavy equipment rental platform for Northeast Ohio." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/aa5ce9f1-103e-4687-9612-83feb17056f3/id-preview-1d94a302--56cf8856-ff27-470c-b30b-126221e5bb4e.lovable.app-1777146777752.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/aa5ce9f1-103e-4687-9612-83feb17056f3/id-preview-1d94a302--56cf8856-ff27-470c-b30b-126221e5bb4e.lovable.app-1777146777752.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Kubota & water truck rental from Hudson, OH. Dispatch to Summit, Portage & Cuyahoga counties.",
+      },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "apple-touch-icon", href: "/favicon.svg" },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -64,6 +72,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: buildSeoJsonLdScriptInnerHtml() }}
+        />
       </head>
       <body>
         {children}

@@ -30,3 +30,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Amplify / Nitro local build output (CI regenerates)
+.amplify-hosting/
+
+# Nested checkout (contains its own .git / .env — do not track)
+equip-lease-hub/

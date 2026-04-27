@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { quoteApi, useQuoteStore } from "@/lib/quoteStore";
@@ -6,6 +6,7 @@ import { Logo } from "./Logo";
 import { Trash2, X, Calendar, ArrowRight, Loader2 } from "lucide-react";
 import { quoteSubmissionSchema } from "@/lib/quoteSchema";
 import { submitQuoteRequest } from "@/lib/quote.functions";
+import { SITE_PHONE_DISPLAY, SITE_PHONE_TEL } from "@/lib/site";
 
 type FormState = {
   contactName: string;
@@ -163,55 +164,88 @@ export function QuoteDrawer() {
             <EmptyState />
           ) : (
             <>
-              <ul className="divide-y divide-[color:var(--linen)]/10">
+              <ul>
                 {items.map((item) => (
-                  <li key={item.id} className="p-6">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <div className="font-mono-tag text-[10px] text-[color:var(--amber-brand)]">
-                          {item.category}
+                  <li
+                    key={item.id}
+                    className="border-b border-[color:var(--linen)]/10 last:border-b-0"
+                  >
+                    <div className="bg-[color:var(--linen)] px-6 py-5 text-[color:var(--pitch)]">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <div className="font-mono-tag text-[10px] text-[color:var(--amber-brand)]">
+                            {item.category}
+                          </div>
+                          <div className="mt-1 font-display text-2xl font-extrabold uppercase leading-none">
+                            {item.name}
+                          </div>
+                          <div className="mt-2 font-mono-tag text-xs text-[color:var(--pitch)]/55">
+                            ${item.rateDay}/day
+                          </div>
                         </div>
-                        <div className="mt-1 font-display text-2xl font-extrabold uppercase leading-none">
-                          {item.name}
+                        <button
+                          onClick={() => quoteApi.remove(item.id)}
+                          className="text-[color:var(--pitch)]/35 transition-colors hover:text-[color:var(--amber-brand)]"
+                          aria-label={`Remove ${item.name}`}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      <div className="mt-5 border-t border-[color:var(--pitch)]/10 pt-4">
+                        <div className="font-mono-tag text-[10px] uppercase tracking-wide text-[color:var(--pitch)]/50">
+                          Rental dates
                         </div>
-                        <div className="mt-2 font-mono-tag text-xs text-[color:var(--linen)]/60">
-                          ${item.rateDay}/day
+                        <p
+                          id={`rental-dates-hint-${item.id}`}
+                          className="mt-2 flex flex-wrap items-baseline gap-x-1.5 gap-y-1.5 text-[13px] leading-snug text-[color:var(--pitch)]/65"
+                        >
+                          <span className="shrink-0">Choose each date in your calendar — use the</span>
+                          <span className="inline-flex shrink-0 items-center rounded-sm border border-[color:var(--pitch)]/20 bg-[color:var(--pitch)]/[0.07] px-2 py-0.5 font-display text-[11px] font-extrabold uppercase tracking-[0.12em] text-[color:var(--pitch)] shadow-sm">
+                            Out
+                          </span>
+                          <span className="shrink-0">and</span>
+                          <span className="inline-flex shrink-0 items-center rounded-sm border border-[color:var(--pitch)]/20 bg-[color:var(--pitch)]/[0.07] px-2 py-0.5 font-display text-[11px] font-extrabold uppercase tracking-[0.12em] text-[color:var(--pitch)] shadow-sm">
+                            Return
+                          </span>
+                          <span className="min-w-0">fields below (entire card is tappable).</span>
+                        </p>
+
+                        <div
+                          className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-md bg-[color:var(--pitch)]/12 ring-1 ring-[color:var(--pitch)]/12"
+                          role="group"
+                          aria-labelledby={`rental-dates-hint-${item.id}`}
+                        >
+                          <DateField
+                            label="Out"
+                            value={item.startDate ?? ""}
+                            onChange={(v) => quoteApi.updateDates(item.id, v, item.endDate)}
+                            variant="light"
+                          />
+                          <DateField
+                            label="Return"
+                            value={item.endDate ?? ""}
+                            onChange={(v) => quoteApi.updateDates(item.id, item.startDate, v)}
+                            variant="light"
+                          />
                         </div>
                       </div>
-                      <button
-                        onClick={() => quoteApi.remove(item.id)}
-                        className="text-[color:var(--linen)]/40 transition-colors hover:text-[color:var(--amber-brand)]"
-                        aria-label={`Remove ${item.name}`}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
 
-                    {/* date pickers */}
-                    <div className="mt-4 grid grid-cols-2 gap-px bg-[color:var(--linen)]/10">
-                      <DateField
-                        label="Out"
-                        value={item.startDate ?? ""}
-                        onChange={(v) => quoteApi.updateDates(item.id, v, item.endDate)}
-                      />
-                      <DateField
-                        label="Return"
-                        value={item.endDate ?? ""}
-                        onChange={(v) => quoteApi.updateDates(item.id, item.startDate, v)}
-                      />
+                      {item.startDate && item.endDate && (
+                        <div className="mt-4 flex items-center justify-between border-t border-[color:var(--pitch)]/10 pt-4 text-sm">
+                          <span className="font-mono-tag text-xs text-[color:var(--pitch)]/55">
+                            {computeDays(item.startDate, item.endDate)} day
+                            {computeDays(item.startDate, item.endDate) === 1 ? "" : "s"}
+                          </span>
+                          <span className="font-display text-lg font-extrabold text-[color:var(--amber-brand)]">
+                            $
+                            {(
+                              item.rateDay * (computeDays(item.startDate, item.endDate) || 0)
+                            ).toLocaleString()}
+                          </span>
+                        </div>
+                      )}
                     </div>
-
-                    {item.startDate && item.endDate && (
-                      <div className="mt-3 flex items-center justify-between border-t border-[color:var(--linen)]/10 pt-3 text-sm">
-                        <span className="font-mono-tag text-xs text-[color:var(--linen)]/60">
-                          {computeDays(item.startDate, item.endDate)} day
-                          {computeDays(item.startDate, item.endDate) === 1 ? "" : "s"}
-                        </span>
-                        <span className="font-display text-lg font-extrabold text-[color:var(--amber-brand)]">
-                          ${(item.rateDay * (computeDays(item.startDate, item.endDate) || 0)).toLocaleString()}
-                        </span>
-                      </div>
-                    )}
                   </li>
                 ))}
               </ul>
@@ -323,10 +357,10 @@ export function QuoteDrawer() {
               )}
             </button>
             <a
-              href="tel:18007826327"
+              href={`tel:${SITE_PHONE_TEL}`}
               className="mt-3 block text-center font-mono-tag text-xs text-[color:var(--linen)]/60 hover:text-[color:var(--amber-brand)]"
             >
-              Or call dispatch · 1-800-STANDARD
+              Or call dispatch · {SITE_PHONE_DISPLAY}
             </a>
           </div>
         )}
@@ -354,22 +388,49 @@ function DateField({
   label,
   value,
   onChange,
+  variant = "dark",
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
+  variant?: "dark" | "light";
 }) {
+  const isLight = variant === "light";
+  const id = useId();
   return (
-    <label className="block bg-[color:var(--pitch)] p-3">
-      <div className="font-mono-tag text-[9px] uppercase text-[color:var(--linen)]/50">
-        {label}
+    <label
+      htmlFor={id}
+      className={`group block min-h-[5.5rem] cursor-pointer px-3.5 pb-3 pt-3 transition-[box-shadow,background-color] duration-150 ${
+        isLight
+          ? "bg-[color:var(--linen-muted)]/55 hover:bg-[color:var(--linen-muted)] focus-within:bg-white focus-within:ring-2 focus-within:ring-inset focus-within:ring-[color:var(--amber-brand)]"
+          : "bg-[color:var(--pitch)] focus-within:ring-2 focus-within:ring-inset focus-within:ring-[color:var(--amber-brand)]"
+      }`}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <span
+          className={`font-display text-[11px] font-extrabold uppercase tracking-[0.14em] ${
+            isLight ? "text-[color:var(--pitch)]" : "text-[color:var(--linen)]/85"
+          }`}
+        >
+          {label}
+        </span>
+        <Calendar
+          className="h-3.5 w-3.5 shrink-0 text-[color:var(--amber-brand)] opacity-55 transition-opacity group-hover:opacity-90"
+          aria-hidden
+        />
       </div>
       <input
+        id={id}
         type="date"
         value={value}
         min={new Date().toISOString().split("T")[0]}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full bg-transparent font-display text-base font-extrabold uppercase text-[color:var(--linen)] outline-none [color-scheme:dark]"
+        onClick={(e) => e.currentTarget.showPicker?.()}
+        className={`mt-2 w-full cursor-pointer bg-transparent font-display text-base font-extrabold uppercase outline-none ${
+          isLight
+            ? "text-[color:var(--pitch)] [color-scheme:light]"
+            : "text-[color:var(--linen)] [color-scheme:dark]"
+        }`}
       />
     </label>
   );

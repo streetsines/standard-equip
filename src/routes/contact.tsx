@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { SITE_EMAIL, SITE_PHONE_DISPLAY, SITE_PHONE_TEL } from "@/lib/site";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -41,16 +42,16 @@ function ContactPage() {
             {
               Icon: Phone,
               k: "Call Dispatch",
-              v: "1-800-STANDARD",
+              v: SITE_PHONE_DISPLAY,
               s: "24/7 — we answer the phone",
-              href: "tel:18007826327",
+              href: `tel:${SITE_PHONE_TEL}`,
             },
             {
               Icon: Mail,
               k: "Email",
-              v: "jake@standardrents.com",
+              v: SITE_EMAIL,
               s: "Replies within 1 business hour",
-              href: "mailto:jake@standardrents.com",
+              href: `mailto:${SITE_EMAIL}`,
             },
             {
               Icon: MapPin,

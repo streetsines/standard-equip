@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { equipment, getEquipmentBySlug } from "@/lib/equipment";
 import { quoteApi } from "@/lib/quoteStore";
 import { ArrowLeft, Plus, Phone } from "lucide-react";
+import { SITE_PHONE_TEL } from "@/lib/site";
 
 export const Route = createFileRoute("/equipment/$slug")({
   loader: ({ params }) => {
@@ -9,23 +10,27 @@ export const Route = createFileRoute("/equipment/$slug")({
     if (!item) throw notFound();
     return { item };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: `${loaderData.item.name} Rental — Standard Rents` },
-          { name: "description", content: loaderData.item.description },
-          { property: "og:title", content: `${loaderData.item.name} Rental — Standard Rents` },
-          { property: "og:description", content: loaderData.item.description },
-          { property: "og:image", content: loaderData.item.image },
-          { name: "twitter:image", content: loaderData.item.image },
-        ]
-      : [],
-  }),
+  head: ({ loaderData }) => {
+    if (!loaderData) return { meta: [] };
+    const i = loaderData.item;
+    const title = i.metaTitle ?? `${i.name} Rental — Standard Rents`;
+    const desc = i.metaDescription ?? i.description;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:image", content: i.image },
+        { name: "twitter:image", content: i.image },
+      ],
+    };
+  },
   notFoundComponent: () => (
     <div className="mx-auto max-w-3xl px-6 py-32 text-center">
       <h1 className="font-display text-6xl font-extrabold uppercase">Unit not found</h1>
       <Link
-        to="/"
+        to="/fleet"
         className="mt-8 inline-flex items-center gap-2 bg-[color:var(--pitch)] px-6 py-3 font-display text-sm font-extrabold uppercase tracking-wider text-[color:var(--linen)]"
       >
         Back to Fleet
@@ -44,7 +49,7 @@ function EquipmentDetailPage() {
       <section className="relative isolate overflow-hidden bg-[color:var(--pitch)] text-[color:var(--linen)]">
         <img
           src={item.image}
-          alt={item.name}
+          alt={item.imageAlt}
           width={1280}
           height={960}
           className="absolute inset-0 h-full w-full object-cover opacity-40"
@@ -53,7 +58,7 @@ function EquipmentDetailPage() {
 
         <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-32">
           <Link
-            to="/"
+            to="/fleet"
             className="inline-flex items-center gap-2 font-mono-tag text-xs uppercase text-[color:var(--linen)]/60 hover:text-[color:var(--amber-brand)]"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Fleet
@@ -87,7 +92,7 @@ function EquipmentDetailPage() {
               <Plus className="h-4 w-4" /> Add to Quote
             </button>
             <a
-              href="tel:18007826327"
+              href={`tel:${SITE_PHONE_TEL}`}
               className="inline-flex items-center gap-3 border border-[color:var(--linen)]/30 px-8 py-4 font-display text-sm font-extrabold uppercase tracking-[0.22em] text-[color:var(--linen)] hover:border-[color:var(--amber-brand)] hover:text-[color:var(--amber-brand)]"
             >
               <Phone className="h-4 w-4" /> Call Dispatch
@@ -137,6 +142,12 @@ function EquipmentDetailPage() {
                 ))}
               </div>
 
+              {item.detailCallout ? (
+                <p className="mt-8 max-w-xl border-l-2 border-[color:var(--amber-brand)] py-3 pl-4 text-sm leading-relaxed text-[color:var(--pitch)]/85">
+                  {item.detailCallout}
+                </p>
+              ) : null}
+
               <div className="eyebrow mt-12 text-[color:var(--amber-deep)]">── Best For</div>
               <div className="mt-6 flex flex-wrap gap-2">
                 {item.bestFor.map((b: string) => (
@@ -166,7 +177,7 @@ function EquipmentDetailPage() {
               >
                 <img
                   src={o.image}
-                  alt={o.name}
+                  alt={o.imageAlt}
                   loading="lazy"
                   width={160}
                   height={160}

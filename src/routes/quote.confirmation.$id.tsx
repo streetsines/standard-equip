@@ -3,6 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { CheckCircle2, Phone, Mail, ArrowLeft, Calendar } from "lucide-react";
+import { SITE_PHONE_TEL } from "@/lib/site";
 
 type QuoteItemRow = {
   id: string;
@@ -114,7 +115,7 @@ function ConfirmationPage() {
 
           <div className="mt-10 flex flex-wrap gap-4">
             <a
-              href="tel:18007826327"
+              href={`tel:${SITE_PHONE_TEL}`}
               className="inline-flex items-center gap-3 bg-[color:var(--amber-brand)] px-6 py-4 font-display text-sm font-extrabold uppercase tracking-[0.2em] text-[color:var(--pitch)] hover:bg-[color:var(--linen)]"
             >
               <Phone className="h-4 w-4" /> Call Dispatch

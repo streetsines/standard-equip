@@ -7,7 +7,7 @@
 
 /*
  * STANDARD RENTS — Design System
- * Pitch (#120F08), Kubota orange (#FF5F00), Linen (#FAF6EE)
+ * Pitch (#120F08), Kubota orange (#F05217), Linen (#FAF6EE)
  * Display: Barlow Condensed
  * Body: Barlow
  */
@@ -61,7 +61,7 @@
   /* Brand */
   --pitch: oklch(0.18 0.015 60);              /* #120F08 */
   --pitch-elevated: oklch(0.24 0.018 60);
-  --amber-brand: #FF5F00;
+  --amber-brand: #F05217;
   --amber-deep: color-mix(in oklab, var(--amber-brand) 68%, var(--pitch));
   --linen: oklch(0.97 0.012 80);              /* #FAF6EE */
   --linen-muted: oklch(0.88 0.012 80);

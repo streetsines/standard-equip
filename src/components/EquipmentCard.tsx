@@ -20,7 +20,7 @@ export function EquipmentCard({ item, index }: { item: Equipment; index: number 
       <div className="relative aspect-[4/3] overflow-hidden bg-[color:var(--pitch-elevated)]">
         <img
           src={item.image}
-          alt={item.name}
+          alt={item.imageAlt}
           loading="lazy"
           width={1024}
           height={768}

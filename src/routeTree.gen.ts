@@ -10,6 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServiceAreaRouteImport } from './routes/service-area'
+import { Route as RentInTwinsburgRouteImport } from './routes/rent-in-twinsburg'
+import { Route as RentInStreetsboroRouteImport } from './routes/rent-in-streetsboro'
+import { Route as RentInMacedoniaRouteImport } from './routes/rent-in-macedonia'
+import { Route as FleetRouteImport } from './routes/fleet'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommercialRouteImport } from './routes/commercial'
 import { Route as IndexRouteImport } from './routes/index'
@@ -19,6 +23,26 @@ import { Route as QuoteConfirmationIdRouteImport } from './routes/quote.confirma
 const ServiceAreaRoute = ServiceAreaRouteImport.update({
   id: '/service-area',
   path: '/service-area',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RentInTwinsburgRoute = RentInTwinsburgRouteImport.update({
+  id: '/rent-in-twinsburg',
+  path: '/rent-in-twinsburg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RentInStreetsboroRoute = RentInStreetsboroRouteImport.update({
+  id: '/rent-in-streetsboro',
+  path: '/rent-in-streetsboro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RentInMacedoniaRoute = RentInMacedoniaRouteImport.update({
+  id: '/rent-in-macedonia',
+  path: '/rent-in-macedonia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FleetRoute = FleetRouteImport.update({
+  id: '/fleet',
+  path: '/fleet',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -51,6 +75,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
+  '/fleet': typeof FleetRoute
+  '/rent-in-macedonia': typeof RentInMacedoniaRoute
+  '/rent-in-streetsboro': typeof RentInStreetsboroRoute
+  '/rent-in-twinsburg': typeof RentInTwinsburgRoute
   '/service-area': typeof ServiceAreaRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/quote/confirmation/$id': typeof QuoteConfirmationIdRoute
@@ -59,6 +87,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
+  '/fleet': typeof FleetRoute
+  '/rent-in-macedonia': typeof RentInMacedoniaRoute
+  '/rent-in-streetsboro': typeof RentInStreetsboroRoute
+  '/rent-in-twinsburg': typeof RentInTwinsburgRoute
   '/service-area': typeof ServiceAreaRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/quote/confirmation/$id': typeof QuoteConfirmationIdRoute
@@ -68,6 +100,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
+  '/fleet': typeof FleetRoute
+  '/rent-in-macedonia': typeof RentInMacedoniaRoute
+  '/rent-in-streetsboro': typeof RentInStreetsboroRoute
+  '/rent-in-twinsburg': typeof RentInTwinsburgRoute
   '/service-area': typeof ServiceAreaRoute
   '/equipment/$slug': typeof EquipmentSlugRoute
   '/quote/confirmation/$id': typeof QuoteConfirmationIdRoute
@@ -78,6 +114,10 @@ export interface FileRouteTypes {
     | '/'
     | '/commercial'
     | '/contact'
+    | '/fleet'
+    | '/rent-in-macedonia'
+    | '/rent-in-streetsboro'
+    | '/rent-in-twinsburg'
     | '/service-area'
     | '/equipment/$slug'
     | '/quote/confirmation/$id'
@@ -86,6 +126,10 @@ export interface FileRouteTypes {
     | '/'
     | '/commercial'
     | '/contact'
+    | '/fleet'
+    | '/rent-in-macedonia'
+    | '/rent-in-streetsboro'
+    | '/rent-in-twinsburg'
     | '/service-area'
     | '/equipment/$slug'
     | '/quote/confirmation/$id'
@@ -94,6 +138,10 @@ export interface FileRouteTypes {
     | '/'
     | '/commercial'
     | '/contact'
+    | '/fleet'
+    | '/rent-in-macedonia'
+    | '/rent-in-streetsboro'
+    | '/rent-in-twinsburg'
     | '/service-area'
     | '/equipment/$slug'
     | '/quote/confirmation/$id'
@@ -103,6 +151,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CommercialRoute: typeof CommercialRoute
   ContactRoute: typeof ContactRoute
+  FleetRoute: typeof FleetRoute
+  RentInMacedoniaRoute: typeof RentInMacedoniaRoute
+  RentInStreetsboroRoute: typeof RentInStreetsboroRoute
+  RentInTwinsburgRoute: typeof RentInTwinsburgRoute
   ServiceAreaRoute: typeof ServiceAreaRoute
   EquipmentSlugRoute: typeof EquipmentSlugRoute
   QuoteConfirmationIdRoute: typeof QuoteConfirmationIdRoute
@@ -115,6 +167,34 @@ declare module '@tanstack/react-router' {
       path: '/service-area'
       fullPath: '/service-area'
       preLoaderRoute: typeof ServiceAreaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rent-in-twinsburg': {
+      id: '/rent-in-twinsburg'
+      path: '/rent-in-twinsburg'
+      fullPath: '/rent-in-twinsburg'
+      preLoaderRoute: typeof RentInTwinsburgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rent-in-streetsboro': {
+      id: '/rent-in-streetsboro'
+      path: '/rent-in-streetsboro'
+      fullPath: '/rent-in-streetsboro'
+      preLoaderRoute: typeof RentInStreetsboroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rent-in-macedonia': {
+      id: '/rent-in-macedonia'
+      path: '/rent-in-macedonia'
+      fullPath: '/rent-in-macedonia'
+      preLoaderRoute: typeof RentInMacedoniaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fleet': {
+      id: '/fleet'
+      path: '/fleet'
+      fullPath: '/fleet'
+      preLoaderRoute: typeof FleetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -159,6 +239,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CommercialRoute: CommercialRoute,
   ContactRoute: ContactRoute,
+  FleetRoute: FleetRoute,
+  RentInMacedoniaRoute: RentInMacedoniaRoute,
+  RentInStreetsboroRoute: RentInStreetsboroRoute,
+  RentInTwinsburgRoute: RentInTwinsburgRoute,
   ServiceAreaRoute: ServiceAreaRoute,
   EquipmentSlugRoute: EquipmentSlugRoute,
   QuoteConfirmationIdRoute: QuoteConfirmationIdRoute,
