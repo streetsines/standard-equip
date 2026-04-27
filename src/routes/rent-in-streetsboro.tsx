@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LocalRentCityPage } from "@/components/LocalRentCityPage";
 
 const desc =
-  "Equipment rental near Streetsboro, OH: Kubota loaders, KX mini excavators & industrial water trucks. Fast dispatch from Hudson yard to Portage County jobsites.";
+  "Equipment rental near Streetsboro, OH: Kubota loaders, KX mini excavators & industrial water trucks. Typical 45-minute lead time direct via Rt 303 from our Hudson yard to Portage County jobsites.";
 
 export const Route = createFileRoute("/rent-in-streetsboro")({
   head: () => ({

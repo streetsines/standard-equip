@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { FleetSection } from "@/components/FleetSection";
 import { CommercialAccounts, CtaStrip, ServiceArea } from "@/components/HomeMarketingSections";
 import { quoteApi } from "@/lib/quoteStore";
+import { serviceAreaCityByName } from "@/lib/serviceArea";
 import heroImg from "@/assets/hero.jpg";
 import { ArrowRight } from "lucide-react";
 
@@ -11,6 +12,8 @@ type LocalRentCityPageProps = {
 };
 
 export function LocalRentCityPage({ cityDisplay }: LocalRentCityPageProps) {
+  const area = serviceAreaCityByName(cityDisplay);
+
   return (
     <>
       <section className="relative isolate overflow-hidden bg-[color:var(--pitch)] text-[color:var(--linen)]">
@@ -36,10 +39,19 @@ export function LocalRentCityPage({ cityDisplay }: LocalRentCityPageProps) {
             <span className="text-[color:var(--amber-brand)]">{cityDisplay}</span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-relaxed text-[color:var(--linen)]/85 md:text-lg">
-            Same-day Kubota skid steers, mini excavators, and industrial water trucks — often{" "}
-            <strong className="text-[color:var(--linen)]">~15 minutes dispatch</strong> from our Hudson,
-            OH 44236 yard to jobsites near {cityDisplay}, Twinsburg, Streetsboro, and across Summit &
-            Portage counties.
+            Same-day Kubota skid steers, mini excavators, and industrial water trucks — typical{" "}
+            <strong className="text-[color:var(--linen)]">
+              {area?.lead ?? "45–60 min"} yard-to-jobsite lead time
+            </strong>{" "}
+            from our Hudson, OH 44236 yard
+            {area?.note ? (
+              <>
+                {" "}
+                ({area.note}) to jobsites near {cityDisplay} and across Summit & Portage counties.
+              </>
+            ) : (
+              <> to jobsites near {cityDisplay} and across Summit & Portage counties.</>
+            )}
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
             <button

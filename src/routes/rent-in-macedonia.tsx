@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LocalRentCityPage } from "@/components/LocalRentCityPage";
 
 const desc =
-  "Heavy equipment rental near Macedonia, OH — Kubota SVL track loaders, KX-Series excavators, and EPA-compliant water trucks. Same-day dispatch from Hudson, OH.";
+  "Heavy equipment rental near Macedonia, OH — Kubota SVL track loaders, KX-Series excavators, and EPA-compliant water trucks. Typical 60-minute lead time via Rt 303 / I-271 from our Hudson yard.";
 
 export const Route = createFileRoute("/rent-in-macedonia")({
   head: () => ({

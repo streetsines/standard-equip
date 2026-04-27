@@ -2,14 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { equipment } from "@/lib/equipment";
 import { SITE_EMAIL, SITE_PHONE_DISPLAY, SITE_PHONE_TEL } from "@/lib/site";
+import { SERVICE_AREA_PROXIMITY_HOOK } from "@/lib/serviceArea";
 
 const serviceAreaLinks = [
-  { to: "/fleet" as const, label: "Hudson" },
-  { to: "/rent-in-twinsburg" as const, label: "Twinsburg" },
+  { to: "/service-area" as const, label: "Hudson" },
   { to: "/rent-in-streetsboro" as const, label: "Streetsboro" },
-  { to: "/rent-in-macedonia" as const, label: "Macedonia" },
+  { to: "/rent-in-twinsburg" as const, label: "Twinsburg" },
   { to: "/service-area" as const, label: "Stow" },
-  { to: "/service-area" as const, label: "Aurora" },
+  { to: "/rent-in-macedonia" as const, label: "Macedonia" },
+  { to: "/service-area" as const, label: "Tallmadge" },
 ] as const;
 
 export function Footer() {
@@ -64,6 +65,9 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+            <p className="mt-5 max-w-xs text-[11px] leading-relaxed text-[color:var(--linen)]/55">
+              {SERVICE_AREA_PROXIMITY_HOOK}
+            </p>
           </div>
 
           <div>

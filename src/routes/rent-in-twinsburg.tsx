@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LocalRentCityPage } from "@/components/LocalRentCityPage";
 
 const desc =
-  "Equipment rental near Twinsburg, OH: Kubota skid steers, mini excavators & 4,000 gallon water trucks. ~15-minute dispatch from our Hudson 44236 yard. Serving Summit & Portage counties.";
+  "Equipment rental near Twinsburg, OH: Kubota skid steers, mini excavators & 4,000 gallon water trucks. Typical 45-minute yard-to-jobsite lead time via Rt 91 from our Hudson 44236 yard. Serving Summit & Portage counties.";
 
 export const Route = createFileRoute("/rent-in-twinsburg")({
   head: () => ({

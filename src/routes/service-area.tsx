@@ -1,36 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MapPin, Truck, Clock } from "lucide-react";
+import { SERVICE_AREA_CITIES, SERVICE_AREA_PROXIMITY_HOOK } from "@/lib/serviceArea";
 
 export const Route = createFileRoute("/service-area")({
   head: () => ({
     meta: [
-      { title: "Service Area — Standard Rents · Hudson, Stow, Tallmadge" },
+      { title: "Service Area — Standard Rents · Hudson, Rt 303 & 91 corridors" },
       {
         name: "description",
         content:
-          "Free same-day equipment delivery to Hudson, Stow, Tallmadge and the greater Akron area. View our full Northeast Ohio service map.",
+          "Competitive equipment delivery lead times from Hudson, OH: Streetsboro & Twinsburg under 45 minutes via Rt 303 & 91. Full Northeast Ohio coverage map.",
       },
       { property: "og:title", content: "Service Area — Standard Rents" },
       {
         property: "og:description",
-        content:
-          "Free same-day equipment delivery across Northeast Ohio.",
+        content: SERVICE_AREA_PROXIMITY_HOOK,
       },
     ],
   }),
   component: ServiceAreaPage,
 });
 
-const cities = [
-  { name: "Hudson", code: "44236", lead: "30 min", note: "Yard location · same-hour dispatch", primary: true },
-  { name: "Stow", code: "44224", lead: "45 min", note: "Free delivery · 8 mi from yard" },
-  { name: "Tallmadge", code: "44278", lead: "60 min", note: "Free delivery · 12 mi from yard" },
-  { name: "Cuyahoga Falls", code: "44221", lead: "60 min", note: "Free delivery · 10 mi" },
-  { name: "Macedonia", code: "44056", lead: "75 min", note: "Free delivery · 9 mi" },
-  { name: "Akron", code: "44308", lead: "75 min", note: "$45 haul · 16 mi" },
-  { name: "Twinsburg", code: "44087", lead: "75 min", note: "Free delivery · 7 mi" },
-  { name: "Streetsboro", code: "44241", lead: "90 min", note: "$35 haul · 11 mi" },
-];
+const cities = SERVICE_AREA_CITIES;
 
 function ServiceAreaPage() {
   return (
@@ -45,8 +36,8 @@ function ServiceAreaPage() {
             <span className="text-[color:var(--amber-brand)]">deliver.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-lg text-[color:var(--linen)]/70">
-            Our yard is in Hudson. Free same-day delivery to the cities below.
-            Outside the zone? Call for a flat-rate haul quote.
+            {SERVICE_AREA_PROXIMITY_HOOK} Same-day dispatch to the cities below — outside
+            the list? Call for a commercial haul quote.
           </p>
         </div>
       </section>
@@ -96,7 +87,7 @@ function ServiceAreaPage() {
                 </div>
                 {c.primary && (
                   <span className="bg-[color:var(--pitch)] px-3 py-1 font-display text-[10px] font-extrabold uppercase tracking-[0.2em] text-[color:var(--amber-brand)]">
-                    Yard
+                    HQ
                   </span>
                 )}
               </div>
@@ -105,8 +96,12 @@ function ServiceAreaPage() {
 
           <div className="mt-16 grid gap-px bg-[color:var(--pitch)]/15 md:grid-cols-3">
             {[
-              { Icon: Truck, k: "Free Delivery", v: "Within our 15-mile core zone." },
-              { Icon: Clock, k: "Same-Day", v: "Order by 2pm for same-day dispatch." },
+              {
+                Icon: Truck,
+                k: "303 & 91 corridors",
+                v: "Fastest transit in the county from our Hudson yard — competitive lead times, not guesswork.",
+              },
+              { Icon: Clock, k: "Same-Day", v: "Order by 2pm for same-day dispatch when equipment is available." },
               { Icon: MapPin, k: "Beyond?", v: "We'll quote a flat haul rate, no markup." },
             ].map(({ Icon, k, v }) => (
               <div key={k} className="flex items-start gap-4 bg-[color:var(--linen)] p-8">

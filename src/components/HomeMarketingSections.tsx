@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { quoteApi } from "@/lib/quoteStore";
+import {
+  SERVICE_AREA_CITIES,
+  SERVICE_AREA_HOME_PREVIEW_COUNT,
+  SERVICE_AREA_PROXIMITY_HOOK,
+} from "@/lib/serviceArea";
 import { ArrowRight, MapPin } from "lucide-react";
 
 export function ServiceArea() {
-  const cities = [
-    { name: "Hudson", code: "44236", distance: "Yard", lead: "30 min" },
-    { name: "Stow", code: "44224", distance: "8 mi", lead: "45 min" },
-    { name: "Tallmadge", code: "44278", distance: "12 mi", lead: "60 min" },
-  ];
+  const cities = SERVICE_AREA_CITIES.slice(0, SERVICE_AREA_HOME_PREVIEW_COUNT);
 
   return (
     <section className="bg-[color:var(--pitch)] py-24 text-[color:var(--linen)]">
@@ -22,8 +23,8 @@ export function ServiceArea() {
               <span className="text-[color:var(--amber-brand)]">you build.</span>
             </h2>
             <p className="mt-6 max-w-md text-[color:var(--linen)]/70">
-              Free same-day delivery across our core service area. Beyond it?
-              We'll quote a flat haul rate — no hidden fees.
+              {SERVICE_AREA_PROXIMITY_HOOK} Same-day dispatch across our core corridors; beyond
+              that, we quote flat hauls — no hidden fees.
             </p>
 
             <Link
@@ -51,7 +52,7 @@ export function ServiceArea() {
                       {c.name}, OH
                     </div>
                     <div className="mt-1 font-mono-tag text-xs text-[color:var(--linen)]/50">
-                      {c.code} · {c.distance} from yard
+                      {c.code} · {c.note}
                     </div>
                   </div>
                 </div>
