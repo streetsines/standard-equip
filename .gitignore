@@ -31,6 +31,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# Amplify CI writes this from Console env (never commit secrets)
+.env.production
+
 # Amplify / Nitro local build output (CI regenerates)
 .amplify-hosting/
 
