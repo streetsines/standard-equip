@@ -3,7 +3,7 @@ import { FleetSection } from "@/components/FleetSection";
 import { CommercialAccounts, CtaStrip, ServiceArea } from "@/components/HomeMarketingSections";
 import { quoteApi } from "@/lib/quoteStore";
 import { serviceAreaCityByName } from "@/lib/serviceArea";
-import heroImg from "@/assets/hero.jpg";
+import heroImg from "@/assets/marketing-site-fog.jpg";
 import { ArrowRight } from "lucide-react";
 
 type LocalRentCityPageProps = {
@@ -19,7 +19,7 @@ export function LocalRentCityPage({ cityDisplay }: LocalRentCityPageProps) {
       <section className="relative isolate overflow-hidden bg-[color:var(--pitch)] text-[color:var(--linen)]">
         <img
           src={heroImg}
-          alt={`Kubota and water truck equipment rental serving ${cityDisplay}, Ohio from Standard Rents Hudson yard`}
+          alt={`Standard Rents equipment yard — foggy morning scene with Kubota machinery; dispatch serving ${cityDisplay}, Ohio from Hudson`}
           width={1920}
           height={1280}
           className="absolute inset-0 h-full w-full object-cover opacity-55"

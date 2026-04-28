@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { quoteApi } from "@/lib/quoteStore";
+import marketingWarehouse from "@/assets/marketing-warehouse.jpg";
+import marketingYardBillboard from "@/assets/marketing-yard-billboard.jpg";
 import {
   SERVICE_AREA_CITIES,
   SERVICE_AREA_HOME_PREVIEW_COUNT,
@@ -127,7 +129,15 @@ export function CommercialAccounts() {
             </div>
           </div>
 
-          <div className="bg-[color:var(--pitch)] p-10 text-[color:var(--linen)] md:p-12">
+          <div className="bg-[color:var(--pitch)] text-[color:var(--linen)]">
+            <img
+              src={marketingWarehouse}
+              alt="Standard Rents indoor equipment bay — rows of Kubota excavators and loaders under warehouse lighting"
+              width={1200}
+              height={500}
+              className="h-44 w-full object-cover object-center md:h-52"
+            />
+            <div className="p-10 md:p-12">
             <div className="font-mono-tag text-[10px] uppercase text-[color:var(--linen)]/50">
               By the Numbers
             </div>
@@ -151,6 +161,7 @@ export function CommercialAccounts() {
                 </div>
               ))}
             </div>
+            </div>
           </div>
         </div>
       </div>
@@ -161,8 +172,16 @@ export function CommercialAccounts() {
 export function CtaStrip() {
   return (
     <section className="stripe-warning py-2">
-      <div className="bg-[color:var(--pitch)] py-16">
-        <div className="mx-auto max-w-7xl px-6 text-center text-[color:var(--linen)]">
+      <div className="relative isolate overflow-hidden bg-[color:var(--pitch)] py-16">
+        <img
+          src={marketingYardBillboard}
+          alt="Standard Rents outdoor yard — Kubota loaders and digital billboard at golden hour"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 h-full w-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-[color:var(--pitch)]/88" />
+        <div className="relative mx-auto max-w-7xl px-6 text-center text-[color:var(--linen)]">
           <div className="font-mono-tag text-[10px] uppercase text-[color:var(--amber-brand)]">
             ── Brand Voice
           </div>
