@@ -8,6 +8,7 @@ import { SITE_PHONE_TEL } from "@/lib/site";
 type QuoteItemRow = {
   id: string;
   name: string;
+  commonName?: string;
   category: string;
   rateDay: number;
   startDate: string;
@@ -150,6 +151,11 @@ function ConfirmationPage() {
                       <div className="mt-1 font-display text-3xl font-extrabold uppercase text-[color:var(--pitch)]">
                         {it.name}
                       </div>
+                      {it.commonName ? (
+                        <div className="mt-1 font-display text-xs font-medium uppercase tracking-wide text-[color:var(--pitch)]/50">
+                          {it.commonName}
+                        </div>
+                      ) : null}
                       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-tag text-xs text-[color:var(--muted-foreground)]">
                         <span className="inline-flex items-center gap-1">
                           <Calendar className="h-3 w-3" />

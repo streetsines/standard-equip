@@ -5,7 +5,10 @@ import miniExcavator from "@/assets/mini-excavator.jpg";
 export type Equipment = {
   id: string;
   slug: string;
+  /** Specific model or spec (e.g. Kubota SVL75-2) */
   name: string;
+  /** Plain-language label for renters who do not know model codes */
+  commonName: string;
   category: string;
   tagline: string;
   focus: string;
@@ -31,27 +34,28 @@ export const equipment: Equipment[] = [
   {
     id: "water-truck-4k",
     slug: "water-trucks",
-    name: "Water Trucks",
+    name: "4,000-Gal Water Truck",
+    commonName: "Water truck (tanker)",
     category: "Site Support",
-    tagline: "Dust Control & Site Support",
+    tagline: "Dust suppression & compaction water",
     focus: "Dust Control",
     metaTitle: "4,000 Gallon Water Truck Rental Hudson OH | Dust Suppression | Standard Rents",
     metaDescription:
-      "Rent industrial-grade water trucks for EPA-compliant dust suppression and compaction water. 4,000-gallon capacity, front/rear spray bars. Same-day dispatch from Hudson to Twinsburg and Streetsboro.",
+      "Rent a 4,000-gallon water truck for EPA-minded dust suppression and compaction water. Spray bars, pumps, and chassis vary by unit, but tank capacity is always 4,000 gallons. Dispatch from Hudson to Twinsburg and Streetsboro.",
     description:
-      "Our 4,000-gallon water trucks are built for the heavy demands of Northeast Ohio roadwork, demolition, and large-scale earthmoving. Equipped with front and rear spray bars, they are the local standard for EPA-compliant dust suppression and compaction water delivery.",
+      "This rental is defined by a 4,000-gallon tank — the size crews ask for on road jobs, demolition, and large pads. Spray hardware (front/rear bars, pumps, and valves) and truck chassis can differ by availability, but you always get 4,000 gallons of on-site water for dust control, compaction passes, and hydro-seeding support.",
     imageAlt:
-      "4,000 gallon water truck for dust suppression and EPA-compliant compaction water rental in Hudson, Ohio",
+      "4,000-gallon construction water truck for dust suppression and compaction water rental from Standard Rents in Hudson Ohio",
     image: waterTruck,
     rateDay: 685,
     rateWeek: 2740,
     rateMonth: 8220,
     unitCode: "SR-WT-4K",
     specs: [
-      { label: "Capacity", value: "4,000 GAL" },
-      { label: "Spray", value: "Front + Rear" },
-      { label: "GVW", value: "33,000 LB" },
-      { label: "CDL", value: "Class B" },
+      { label: "Tank", value: "4,000 GAL" },
+      { label: "Spray", value: "Front + rear bars" },
+      { label: "Typical use", value: "Dust + compaction" },
+      { label: "CDL", value: "Usually Class B" },
     ],
     bestFor: [
       "Road Construction",
@@ -67,28 +71,29 @@ export const equipment: Equipment[] = [
   {
     id: "skid-steer-s76",
     slug: "skid-steers",
-    name: "Skid Steers",
+    name: "Kubota SVL75-2",
+    commonName: "Skid steer / compact track loader",
     category: "Earthmoving",
-    tagline: "Kubota SVL Series Track Loaders",
+    tagline: "Compact track loader · rental workhorse",
     focus: "Versatility",
-    metaTitle: "Kubota Skid Steer Rental Hudson OH | SVL75-3 Track Loaders | Standard Rents",
+    metaTitle: "Kubota SVL75-2 Track Loader Rental Hudson OH | SVL75-2 CTL | Standard Rents",
     metaDescription:
-      "Rent Kubota SVL series track loaders for professional grading, site prep, and material handling. Powerful, high-lift machines dispatched hourly from Hudson to Stow and Akron.",
+      "Rent the Kubota SVL75-2 compact track loader for grading, site prep, and material handling. ~74 HP class, high ROC for clay and stone, universal attachments. Dispatch from Hudson to Stow and Akron.",
     description:
-      "Featuring the Kubota SVL75-3, our track loaders provide the stability and breakout force required for Northeast Ohio's heavy clay and rocky terrain. Ideal for site grading, land clearing, and material handling, these machines are compatible with all universal attachments.",
+      "When contractors ask for a Kubota SVL75-2, they want the machine that balances everyday rental demand with real capability: stable tracks on Northeast Ohio clay and stone, strong breakout for land clearing and pads, and universal skid-attach compatibility for buckets, forks, grapples, and more. This is the specific model we quote for SVL compact track loader rentals.",
     imageAlt:
-      "Kubota SVL75-3 track loader for rent in Hudson Ohio — site preparation and grading in Summit County",
+      "Kubota SVL75-2 compact track loader for rent in Hudson Ohio — grading and site prep in Summit County",
     image: skidSteer,
     rateDay: 385,
     rateWeek: 1450,
     rateMonth: 4150,
-    unitCode: "SR-SS-SVL",
+    unitCode: "SR-SS-SVL75-2",
     specs: [
-      { label: "Series", value: "Kubota SVL" },
-      { label: "Model", value: "SVL75-3" },
-      { label: "Lift", value: "3,400 LB" },
-      { label: "HP", value: "74 HP" },
-      { label: "Attach", value: "Universal" },
+      { label: "Make / model", value: "Kubota SVL75-2" },
+      { label: "ROC (35%)", value: "2,640 LB" },
+      { label: "Engine", value: "~74 HP" },
+      { label: "Op. weight", value: "~10,460 LB" },
+      { label: "Attach", value: "Universal skid" },
     ],
     bestFor: [
       "Finish Grading",
@@ -102,27 +107,28 @@ export const equipment: Equipment[] = [
   {
     id: "mini-ex-35z",
     slug: "mini-excavators",
-    name: "Mini Excavators",
+    name: "Kubota KX057-4",
+    commonName: "Mini excavator",
     category: "Trenching & Digging",
-    tagline: "Precise Trenching & Digging",
+    tagline: "6-ton class · tight jobsites",
     focus: "Precision",
-    metaTitle: "Kubota Mini Excavator Rental Hudson OH | KX-Series Digging | Standard Rents",
+    metaTitle: "Kubota KX057-4 Mini Excavator Rental Hudson OH | KX057-4 Digging | Standard Rents",
     metaDescription:
-      "Precision Kubota mini excavators for trenching, septic repair, and utility work. Compact design for tight-access jobsites in Hudson, Macedonia, and Aurora.",
+      "Rent the Kubota KX057-4 mini excavator for trenching, septic, utilities, and footers. ~13 ft dig depth class, tight-radius tail swing for alleys and back yards. Hudson dispatch to Macedonia and Summit County.",
     description:
-      "Our Kubota KX-Series mini excavators deliver precision and power for tight-access jobsites. Perfect for utility trenching, septic system repair, and foundation digging, these machines offer the reach and depth needed for professional-grade site work.",
+      "The Kubota KX057-4 is the mini most crews request when they outgrow a 3-ton but do not want a full-size hoe: enough stick and power for utility trenching, septic runs, footers, and pool digs, with a tight tail swing for working along foundations and fence lines. This is the specific model we quote for KX mini-excavator rentals.",
     imageAlt:
-      "Kubota KX-Series mini excavator for utility trenching and septic repair rental in Hudson Ohio",
+      "Kubota KX057-4 class mini excavator digging a trench on a Northeast Ohio construction site — utility and septic rental from Hudson Ohio",
     image: miniExcavator,
     rateDay: 425,
     rateWeek: 1620,
     rateMonth: 4680,
-    unitCode: "SR-EX-KX",
+    unitCode: "SR-EX-KX057-4",
     specs: [
-      { label: "Series", value: "KX" },
-      { label: "Weight", value: "7,700 LB" },
-      { label: "Dig Depth", value: "10' 6\"" },
-      { label: "Tail", value: "Zero Swing" },
+      { label: "Make / model", value: "Kubota KX057-4" },
+      { label: "Op. weight", value: "~12,565 LB" },
+      { label: "Max dig depth", value: "~13' 1\"" },
+      { label: "Tail swing", value: "Tight-radius" },
     ],
     bestFor: [
       "Septic Repair",
@@ -133,7 +139,7 @@ export const equipment: Equipment[] = [
       "Foundation digging",
     ],
     detailCallout:
-      "Same-day transport available for residential site work in Aurora and Macedonia.",
+      "Same-day transport for tight-access digs in Macedonia, Twinsburg, and residential streets around Hudson.",
   },
 ];
 

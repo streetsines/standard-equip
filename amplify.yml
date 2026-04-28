@@ -1,3 +1,8 @@
+# Hosting runtime (Amplify Console → Environment variables), not only local .env:
+#   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+# Quote notification email (Resend — https://resend.com):
+#   RESEND_API_KEY (required to send), RESEND_FROM (optional; default onboarding@resend.dev for tests)
+#   QUOTE_NOTIFY_EMAIL (optional; default aaron@rentstandard.com)
 version: 1
 frontend:
   phases:

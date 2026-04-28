@@ -3,6 +3,7 @@ import { z } from "zod";
 export const quoteItemSchema = z.object({
   id: z.string().min(1).max(120),
   name: z.string().min(1).max(120),
+  commonName: z.string().trim().max(160).optional().or(z.literal("")),
   category: z.string().min(1).max(120),
   rateDay: z.number().min(0).max(100000),
   startDate: z.string().min(1, "Start date required"),

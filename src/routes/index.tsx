@@ -6,7 +6,7 @@ import heroImg from "@/assets/hero.jpg";
 import { ArrowRight } from "lucide-react";
 
 const homeDescription =
-  "Kubota skid steers & mini excavators plus 4,000 gallon water trucks for rent in Hudson, OH. Same-day dispatch across Summit, Portage, and Cuyahoga counties — Twinsburg, Streetsboro, Macedonia & beyond.";
+  "Kubota SVL75-2 compact track loaders, KX057-4 mini excavators, and 4,000-gallon water trucks for rent in Hudson, OH. Same-day dispatch across Summit, Portage, and Cuyahoga counties — Twinsburg, Streetsboro, Macedonia & beyond.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -70,7 +70,7 @@ function Hero() {
           <div className="mb-6 inline-flex items-center gap-3 border border-[color:var(--amber-brand)]/40 bg-[color:var(--amber-brand)]/10 px-4 py-2">
             <span className="h-1.5 w-1.5 bg-[color:var(--amber-brand)]" />
             <span className="font-mono-tag text-[10px] uppercase tracking-[0.2em] text-[color:var(--amber-brand)]">
-              Kubota · Water trucks · Hudson OH 44236
+              SVL75-2 · KX057-4 · 4,000-gal water · Hudson OH 44236
             </span>
           </div>
           <h1 className="font-display text-[clamp(3.5rem,11vw,11rem)] font-extrabold uppercase leading-[0.82] tracking-[0.01em]">
@@ -82,7 +82,7 @@ function Hero() {
           </h1>
 
           <p className="mt-10 max-w-xl text-base leading-relaxed text-[color:var(--linen)]/80 md:text-lg">
-            Kubota track loaders, KX-Series mini excavators, and industrial water trucks for{" "}
+            Kubota SVL75-2 track loaders, KX057-4 mini excavators, and 4,000-gallon water trucks for{" "}
             <strong className="text-[color:var(--linen)]">same-day dispatch</strong> from Hudson to
             Twinsburg, Streetsboro, Macedonia, and across Summit, Portage &amp; Cuyahoga counties.
           </p>

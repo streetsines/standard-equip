@@ -70,6 +70,9 @@ function EquipmentDetailPage() {
           <h1 className="mt-3 font-display text-7xl font-extrabold uppercase leading-[0.82] md:text-9xl">
             {item.name}
           </h1>
+          <p className="mt-3 max-w-2xl font-display text-sm font-medium uppercase tracking-[0.14em] text-[color:var(--linen)]/65 md:text-base">
+            {item.commonName}
+          </p>
           <p className="mt-4 max-w-2xl font-display text-xl font-extralight uppercase tracking-[0.18em] text-[color:var(--amber-brand)]">
             {item.tagline}
           </p>
@@ -83,6 +86,7 @@ function EquipmentDetailPage() {
                 quoteApi.add({
                   id: item.id,
                   name: item.name,
+                  commonName: item.commonName,
                   category: item.category,
                   rateDay: item.rateDay,
                 })

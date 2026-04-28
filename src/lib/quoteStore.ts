@@ -3,6 +3,8 @@ import { useSyncExternalStore } from "react";
 export type QuoteItem = {
   id: string;
   name: string;
+  /** Plain-language label (e.g. "Skid steer / compact track loader") */
+  commonName?: string;
   category: string;
   rateDay: number;
   startDate?: string;

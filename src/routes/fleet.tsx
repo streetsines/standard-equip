@@ -4,7 +4,7 @@ import { EquipmentCard } from "@/components/EquipmentCard";
 import { FleetTrustStrip } from "@/components/FleetSection";
 
 const fleetDescription =
-  "Northeast Ohio's premium fleet: 4,000 gallon water trucks, Kubota SVL track loaders, and Kubota KX-Series mini excavators. Same-day dispatch from Hudson, OH 44236 to Twinsburg, Streetsboro, Summit & Portage counties.";
+  "Northeast Ohio's premium fleet: 4,000-gallon water trucks, Kubota SVL75-2 compact track loaders, and Kubota KX057-4 mini excavators. Same-day dispatch from Hudson, OH 44236 to Twinsburg, Streetsboro, Summit & Portage counties.";
 
 export const Route = createFileRoute("/fleet")({
   head: () => ({

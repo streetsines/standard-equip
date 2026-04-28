@@ -1,9 +1,10 @@
 import { useEffect, useId, useMemo, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { quoteApi, useQuoteStore } from "@/lib/quoteStore";
+import { equipment } from "@/lib/equipment";
 import { Logo } from "./Logo";
-import { Trash2, X, Calendar, ArrowRight, Loader2 } from "lucide-react";
+import { Trash2, X, Calendar, ArrowRight, Loader2, Plus } from "lucide-react";
 import { quoteSubmissionSchema } from "@/lib/quoteSchema";
 import { submitQuoteRequest } from "@/lib/quote.functions";
 import { SITE_PHONE_DISPLAY, SITE_PHONE_TEL } from "@/lib/site";
@@ -76,6 +77,7 @@ export function QuoteDrawer() {
       items: items.map((i) => ({
         id: i.id,
         name: i.name,
+        commonName: i.commonName,
         category: i.category,
         rateDay: i.rateDay,
         startDate: i.startDate ?? "",
@@ -113,7 +115,15 @@ export function QuoteDrawer() {
       }
     } catch (err) {
       console.error(err);
-      setServerError("Network error. Please try again or call dispatch.");
+      const message =
+        err instanceof Error ? err.message : typeof err === "string" ? err : "";
+      const looksLikeTransport =
+        /fetch|network|failed to load|load failed|aborted|timeout/i.test(message);
+      setServerError(
+        looksLikeTransport || !message
+          ? "Can't reach the booking server. Check your connection, try again, or call dispatch."
+          : message,
+      );
     } finally {
       setSubmitting(false);
     }
@@ -161,7 +171,7 @@ export function QuoteDrawer() {
         {/* body */}
         <div className="flex-1 overflow-y-auto">
           {items.length === 0 ? (
-            <EmptyState />
+            <EmptyQuoteFleetPicker />
           ) : (
             <>
               <ul>
@@ -179,6 +189,11 @@ export function QuoteDrawer() {
                           <div className="mt-1 font-display text-2xl font-extrabold uppercase leading-none">
                             {item.name}
                           </div>
+                          {item.commonName ? (
+                            <div className="mt-1 font-display text-[10px] font-medium uppercase tracking-wide text-[color:var(--pitch)]/45">
+                              {item.commonName}
+                            </div>
+                          ) : null}
                           <div className="mt-2 font-mono-tag text-xs text-[color:var(--pitch)]/55">
                             ${item.rateDay}/day
                           </div>
@@ -369,17 +384,82 @@ export function QuoteDrawer() {
   );
 }
 
-function EmptyState() {
+function EmptyQuoteFleetPicker() {
   return (
-    <div className="flex h-full flex-col items-center justify-center px-6 py-20 text-center">
-      <Calendar className="h-10 w-10 text-[color:var(--linen)]/20" />
-      <h3 className="mt-6 font-display text-2xl font-extrabold uppercase">
-        Empty Quote
+    <div className="px-6 pb-10 pt-8">
+      <div className="font-mono-tag text-[10px] uppercase tracking-[0.2em] text-[color:var(--amber-brand)]">
+        Start your quote
+      </div>
+      <h3 className="mt-2 font-display text-2xl font-extrabold uppercase leading-tight text-[color:var(--linen)]">
+        What are you renting?
       </h3>
-      <p className="mt-2 max-w-xs text-sm text-[color:var(--linen)]/50">
-        Add equipment from the fleet, pick your dates, and we'll dispatch within
-        the hour.
+      <p className="mt-2 text-sm leading-relaxed text-[color:var(--linen)]/60">
+        Add one or more units below. You&apos;ll set out and return dates on the next
+        step—then send your request to dispatch.
       </p>
+
+      <ul className="mt-8 space-y-3">
+        {equipment.map((item) => (
+          <li key={item.id}>
+            <div className="flex gap-3 border border-[color:var(--linen)]/12 bg-[color:var(--pitch-elevated)] p-3">
+              <img
+                src={item.image}
+                alt={item.imageAlt}
+                width={80}
+                height={64}
+                className="h-16 w-20 shrink-0 rounded-sm object-cover"
+              />
+              <div className="min-w-0 flex-1">
+                <div className="font-mono-tag text-[9px] uppercase tracking-wide text-[color:var(--amber-brand)]">
+                  {item.category}
+                </div>
+                <div className="mt-0.5 font-display text-[10px] font-medium uppercase leading-snug tracking-[0.08em] text-[color:var(--linen)]/55">
+                  {item.commonName}
+                </div>
+                <div className="truncate font-display text-base font-extrabold uppercase leading-tight text-[color:var(--linen)]">
+                  {item.name}
+                </div>
+                <div className="mt-0.5 font-mono-tag text-[11px] text-[color:var(--linen)]/45">
+                  ${item.rateDay.toLocaleString()}/day
+                </div>
+              </div>
+              <div className="flex shrink-0 flex-col gap-1.5 self-center">
+                <button
+                  type="button"
+                  onClick={() =>
+                    quoteApi.add({
+                      id: item.id,
+                      name: item.name,
+                      commonName: item.commonName,
+                      category: item.category,
+                      rateDay: item.rateDay,
+                    })
+                  }
+                  className="inline-flex items-center justify-center gap-1.5 bg-[color:var(--amber-brand)] px-3 py-2 font-display text-[10px] font-extrabold uppercase tracking-[0.14em] text-[color:var(--pitch)] transition-colors hover:bg-[color:var(--linen)]"
+                >
+                  <Plus className="h-3.5 w-3.5" aria-hidden />
+                  Add
+                </button>
+                <Link
+                  to="/equipment/$slug"
+                  params={{ slug: item.slug }}
+                  className="text-center font-mono-tag text-[9px] uppercase tracking-wide text-[color:var(--linen)]/45 underline-offset-2 hover:text-[color:var(--amber-brand)] hover:underline"
+                >
+                  Specs
+                </Link>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <Link
+        to="/fleet"
+        className="mt-8 flex items-center justify-center gap-2 border border-[color:var(--linen)]/20 py-3 font-display text-xs font-extrabold uppercase tracking-[0.18em] text-[color:var(--linen)] transition-colors hover:border-[color:var(--amber-brand)] hover:text-[color:var(--amber-brand)]"
+      >
+        Browse full fleet
+        <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+      </Link>
     </div>
   );
 }

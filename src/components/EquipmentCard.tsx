@@ -31,6 +31,9 @@ export function EquipmentCard({ item, index }: { item: Equipment; index: number 
           <div className="font-mono-tag text-[10px] text-[color:var(--amber-brand)]">
             {item.unitCode}
           </div>
+          <p className="mt-2 max-w-[95%] font-display text-[11px] font-medium uppercase leading-snug tracking-[0.12em] text-[color:var(--linen)]/70">
+            {item.commonName}
+          </p>
           <h3 className="mt-1 font-display text-5xl font-extrabold uppercase leading-[0.85] tracking-wide text-[color:var(--linen)] md:text-6xl">
             {item.name}
           </h3>
@@ -86,6 +89,7 @@ export function EquipmentCard({ item, index }: { item: Equipment; index: number 
               quoteApi.add({
                 id: item.id,
                 name: item.name,
+                commonName: item.commonName,
                 category: item.category,
                 rateDay: item.rateDay,
               })
