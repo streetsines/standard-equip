@@ -106,6 +106,12 @@ export function QuoteDrawer() {
     try {
       const result = await submitFn({ data: parsed.data });
       if (result.ok) {
+        if (typeof window !== "undefined") {
+          window.sessionStorage.setItem(
+            `quote_confirmation_${result.id}`,
+            JSON.stringify(result.confirmation),
+          );
+        }
         quoteApi.clear();
         quoteApi.close();
         setForm(EMPTY_FORM);

@@ -2,7 +2,7 @@ import type { QuoteSubmission } from "./quoteSchema";
 import { SITE_ORIGIN } from "./site";
 import { computeQuoteDays } from "./quoteMath";
 
-const DEFAULT_NOTIFY = "aaron@rentstandard.com";
+const DEFAULT_NOTIFY = "get@rentstandard.com";
 
 function escapeHtml(s: string) {
   return s

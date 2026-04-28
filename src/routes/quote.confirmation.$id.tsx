@@ -1,8 +1,6 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "@/integrations/supabase/types";
-import { CheckCircle2, Phone, Mail, ArrowLeft, Calendar } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { CheckCircle2, Phone, Mail, ArrowLeft, Calendar, Barcode } from "lucide-react";
 import { SITE_PHONE_TEL } from "@/lib/site";
 
 type QuoteItemRow = {
@@ -15,41 +13,20 @@ type QuoteItemRow = {
   endDate: string;
 };
 
-const fetchQuote = createServerFn({ method: "GET" })
-  .inputValidator((input: { id: string }) => {
-    if (!/^[0-9a-f-]{36}$/i.test(input.id)) {
-      throw new Error("Invalid quote id");
-    }
-    return input;
-  })
-  .handler(async ({ data }) => {
-    const SUPABASE_URL = process.env.SUPABASE_URL;
-    const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!SUPABASE_URL || !SERVICE_KEY) {
-      throw new Error("Supabase environment is not configured.");
-    }
-    const supabase = createClient<Database>(SUPABASE_URL, SERVICE_KEY, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
-    const { data: row, error } = await supabase
-      .from("quote_requests")
-      .select("*")
-      .eq("id", data.id)
-      .maybeSingle();
-
-    if (error) {
-      console.error("Confirmation fetch error:", error);
-      return null;
-    }
-    return row;
-  });
+type QuoteConfirmationPayload = {
+  id: string;
+  createdAt: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  company?: string;
+  deliveryCity?: string;
+  notes?: string;
+  estimatedTotal: number;
+  items: QuoteItemRow[];
+};
 
 export const Route = createFileRoute("/quote/confirmation/$id")({
-  loader: async ({ params }) => {
-    const quote = await fetchQuote({ data: { id: params.id } });
-    if (!quote) throw notFound();
-    return { quote };
-  },
   head: () => ({
     meta: [
       { title: "Quote Submitted — Standard Rents" },
@@ -57,20 +34,6 @@ export const Route = createFileRoute("/quote/confirmation/$id")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  notFoundComponent: () => (
-    <div className="mx-auto max-w-3xl px-6 py-32 text-center">
-      <h1 className="font-display text-6xl font-extrabold uppercase">Quote not found</h1>
-      <p className="mt-4 text-[color:var(--muted-foreground)]">
-        We couldn't locate that quote reference.
-      </p>
-      <Link
-        to="/"
-        className="mt-8 inline-flex items-center gap-2 bg-[color:var(--pitch)] px-6 py-3 font-display text-sm font-extrabold uppercase tracking-wider text-[color:var(--linen)]"
-      >
-        <ArrowLeft className="h-4 w-4" /> Back home
-      </Link>
-    </div>
-  ),
   component: ConfirmationPage,
 });
 
@@ -88,9 +51,30 @@ function formatDate(d: string) {
 }
 
 function ConfirmationPage() {
-  const { quote } = Route.useLoaderData();
-  const items = (quote.items as unknown as QuoteItemRow[]) ?? [];
-  const reference = quote.id.slice(0, 8).toUpperCase();
+  const { id } = Route.useParams();
+  const [quote, setQuote] = useState<QuoteConfirmationPayload | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const raw = window.sessionStorage.getItem(`quote_confirmation_${id}`);
+    if (!raw) return;
+    try {
+      setQuote(JSON.parse(raw) as QuoteConfirmationPayload);
+    } catch {
+      setQuote(null);
+    }
+  }, [id]);
+
+  const reference = (quote?.id ?? id).slice(0, 8).toUpperCase();
+  const items = quote?.items ?? [];
+  const barcodePattern = useMemo(
+    () =>
+      `${reference}SR${new Date().toISOString().slice(0, 10).replace(/-/g, "")}`
+        .split("")
+        .map((ch, i) => ((ch.charCodeAt(0) + i * 11) % 4) + 1),
+    [reference],
+  );
+  const firstName = quote?.contactName?.split(" ")[0] ?? "crew";
 
   return (
     <div className="bg-[color:var(--linen)]">
@@ -104,13 +88,19 @@ function ConfirmationPage() {
             </div>
           </div>
           <h1 className="mt-6 font-display text-5xl font-extrabold uppercase leading-[0.95] md:text-7xl">
-            We've got your<br />request, {quote.contact_name.split(" ")[0]}.
+            We've got your<br />request, {firstName}.
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-[color:var(--linen)]/70">
-            Dispatch will review your specs and send a firm quote to{" "}
-            <span className="font-bold text-[color:var(--linen)]">{quote.contact_email}</span>{" "}
-            within <span className="font-bold text-[color:var(--amber-brand)]">1 business hour</span>.
-            Need it sooner? Call the number below and reference quote{" "}
+            Dispatch has your request and will follow up quickly.
+            {quote?.contactEmail ? (
+              <>
+                {" "}
+                We will send a firm quote to{" "}
+                <span className="font-bold text-[color:var(--linen)]">{quote.contactEmail}</span>{" "}
+                within <span className="font-bold text-[color:var(--amber-brand)]">1 business hour</span>.
+              </>
+            ) : null}{" "}
+            Need it sooner? Call the number below and reference{" "}
             <span className="font-mono-tag text-[color:var(--amber-brand)]">{reference}</span>.
           </p>
 
@@ -139,46 +129,53 @@ function ConfirmationPage() {
             <div className="font-mono-tag text-xs uppercase tracking-[0.2em] text-[color:var(--amber-deep)]">
               ── Equipment Requested
             </div>
-            <ul className="mt-6 divide-y divide-[color:var(--pitch)]/10 border-y border-[color:var(--pitch)]/10">
-              {items.map((it) => {
-                const days = computeDays(it.startDate, it.endDate);
-                return (
-                  <li key={it.id} className="grid gap-3 py-6 md:grid-cols-[1fr_auto] md:items-center">
-                    <div>
-                      <div className="font-mono-tag text-[10px] uppercase text-[color:var(--amber-deep)]">
-                        {it.category}
-                      </div>
-                      <div className="mt-1 font-display text-3xl font-extrabold uppercase text-[color:var(--pitch)]">
-                        {it.name}
-                      </div>
-                      {it.commonName ? (
-                        <div className="mt-1 font-display text-xs font-medium uppercase tracking-wide text-[color:var(--pitch)]/50">
-                          {it.commonName}
+            {items.length > 0 ? (
+              <ul className="mt-6 divide-y divide-[color:var(--pitch)]/10 border-y border-[color:var(--pitch)]/10">
+                {items.map((it) => {
+                  const days = computeDays(it.startDate, it.endDate);
+                  return (
+                    <li key={it.id} className="grid gap-3 py-6 md:grid-cols-[1fr_auto] md:items-center">
+                      <div>
+                        <div className="font-mono-tag text-[10px] uppercase text-[color:var(--amber-deep)]">
+                          {it.category}
                         </div>
-                      ) : null}
-                      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-tag text-xs text-[color:var(--muted-foreground)]">
-                        <span className="inline-flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {formatDate(it.startDate)} → {formatDate(it.endDate)}
-                        </span>
-                        <span>· {days} day{days === 1 ? "" : "s"}</span>
-                        <span>· ${it.rateDay}/day</span>
+                        <div className="mt-1 font-display text-3xl font-extrabold uppercase text-[color:var(--pitch)]">
+                          {it.name}
+                        </div>
+                        {it.commonName ? (
+                          <div className="mt-1 font-display text-xs font-medium uppercase tracking-wide text-[color:var(--pitch)]/50">
+                            {it.commonName}
+                          </div>
+                        ) : null}
+                        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-tag text-xs text-[color:var(--muted-foreground)]">
+                          <span className="inline-flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {formatDate(it.startDate)} → {formatDate(it.endDate)}
+                          </span>
+                          <span>· {days} day{days === 1 ? "" : "s"}</span>
+                          <span>· ${it.rateDay}/day</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="font-display text-3xl font-extrabold text-[color:var(--pitch)] md:text-right">
-                      ${(it.rateDay * days).toLocaleString()}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+                      <div className="font-display text-3xl font-extrabold text-[color:var(--pitch)] md:text-right">
+                        ${(it.rateDay * days).toLocaleString()}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <div className="mt-6 rounded border border-[color:var(--pitch)]/15 bg-white p-6 text-sm text-[color:var(--pitch)]/70">
+                Quote details were sent successfully, but this page cannot load full line items after refresh.
+                If needed, call dispatch and reference <span className="font-bold">{reference}</span>.
+              </div>
+            )}
 
             <div className="mt-6 flex items-baseline justify-between border-t-2 border-[color:var(--pitch)] pt-6">
               <div className="font-mono-tag text-xs uppercase text-[color:var(--muted-foreground)]">
                 Estimated Total
               </div>
               <div className="font-display text-5xl font-extrabold text-[color:var(--amber-deep)]">
-                ${Number(quote.estimated_total).toLocaleString()}
+                ${Number(quote?.estimatedTotal ?? 0).toLocaleString()}
               </div>
             </div>
             <div className="mt-2 text-right font-mono-tag text-[10px] text-[color:var(--muted-foreground)]">
@@ -195,13 +192,13 @@ function ConfirmationPage() {
               Contact
             </h3>
             <dl className="mt-6 space-y-4 text-sm">
-              <SummaryRow label="Name" value={quote.contact_name} />
-              <SummaryRow label="Email" value={quote.contact_email} icon={<Mail className="h-3 w-3" />} />
-              <SummaryRow label="Phone" value={quote.contact_phone} icon={<Phone className="h-3 w-3" />} />
-              {quote.company && <SummaryRow label="Company" value={quote.company} />}
-              {quote.delivery_city && <SummaryRow label="Delivery" value={quote.delivery_city} />}
+              <SummaryRow label="Name" value={quote?.contactName ?? "Submitted"} />
+              <SummaryRow label="Email" value={quote?.contactEmail ?? "On file"} icon={<Mail className="h-3 w-3" />} />
+              <SummaryRow label="Phone" value={quote?.contactPhone ?? "On file"} icon={<Phone className="h-3 w-3" />} />
+              {quote?.company && <SummaryRow label="Company" value={quote.company} />}
+              {quote?.deliveryCity && <SummaryRow label="Delivery" value={quote.deliveryCity} />}
             </dl>
-            {quote.notes && (
+            {quote?.notes && (
               <>
                 <div className="mt-8 font-mono-tag text-[10px] uppercase text-[color:var(--amber-brand)]">
                   Job Notes
@@ -212,6 +209,30 @@ function ConfirmationPage() {
               </>
             )}
           </aside>
+        </div>
+
+        <div className="mt-12 overflow-hidden border border-[color:var(--pitch)]/20 bg-white">
+          <div className="flex items-center justify-between border-b border-[color:var(--pitch)]/10 px-6 py-4">
+            <div className="font-mono-tag text-[10px] uppercase tracking-[0.22em] text-[color:var(--muted-foreground)]">
+              Booking Slip · {reference}
+            </div>
+            <Barcode className="h-4 w-4 text-[color:var(--amber-deep)]" />
+          </div>
+          <div className="px-6 pb-6 pt-5">
+            <div className="flex h-20 items-end gap-[2px] rounded-sm bg-[color:var(--pitch)]/5 px-2 py-2">
+              {barcodePattern.map((w, i) => (
+                <span
+                  key={`${w}-${i}`}
+                  className="bg-[color:var(--pitch)]"
+                  style={{ width: `${w + 1}px`, height: i % 5 === 0 ? "100%" : "82%" }}
+                />
+              ))}
+            </div>
+            <div className="mt-3 flex items-center justify-between font-mono-tag text-[10px] uppercase text-[color:var(--muted-foreground)]">
+              <span>STANDARD RENTS · DISPATCH</span>
+              <span>{reference}</span>
+            </div>
+          </div>
         </div>
       </section>
     </div>

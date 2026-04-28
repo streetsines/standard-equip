@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { FleetSection } from "@/components/FleetSection";
 import { CommercialAccounts, CtaStrip, ServiceArea } from "@/components/HomeMarketingSections";
 import { quoteApi } from "@/lib/quoteStore";
-import heroImg from "@/assets/marketing-hero-concrete-yard.jpg";
+import heroImg from "@/assets/hero.jpg";
 import { ArrowRight } from "lucide-react";
 
 const homeDescription =
@@ -37,7 +37,7 @@ function Hero() {
     <section className="relative isolate overflow-hidden bg-[color:var(--pitch)] text-[color:var(--linen)]">
       <img
         src={heroImg}
-        alt="Standard Rents industrial yard — logo on a concrete wall with orange Kubota mini excavators parked under an open shed"
+        alt="Standard Rents heavy equipment yard — Kubota loaders and water truck rental in Hudson Ohio serving Summit County, Portage County, and Cuyahoga County"
         width={1920}
         height={1280}
         className="absolute inset-0 h-full w-full object-cover opacity-55"
@@ -45,10 +45,6 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--pitch)]/40 via-[color:var(--pitch)]/70 to-[color:var(--pitch)]" />
 
       <div className="hex-pattern absolute inset-0 opacity-40 mix-blend-screen" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[color:var(--pitch)]/92 via-[color:var(--pitch)]/45 via-[42%] to-transparent to-[72%]"
-      />
 
       <div className="relative mx-auto flex min-h-[88vh] max-w-7xl flex-col justify-between px-6 pb-16 pt-20">
         <div className="flex items-center justify-between">

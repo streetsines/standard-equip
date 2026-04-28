@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { SITE_EMAIL, SITE_PHONE_DISPLAY, SITE_PHONE_TEL } from "@/lib/site";
-import contactHeaderImg from "@/assets/marketing-branded-truck.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -24,17 +23,8 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   return (
-    <>
-    <section className="relative isolate overflow-hidden bg-[color:var(--pitch)] py-20 text-[color:var(--linen)] md:py-28">
-      <img
-        src={contactHeaderImg}
-        alt="Standard Rents branded service truck at an industrial equipment yard"
-        width={1920}
-        height={1280}
-        className="absolute inset-0 h-full w-full object-cover opacity-35"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--pitch)]/90 via-[color:var(--pitch)]/80 to-[color:var(--pitch)]" />
-      <div className="relative mx-auto max-w-7xl px-6">
+    <section className="bg-[color:var(--pitch)] py-24 text-[color:var(--linen)]">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="font-mono-tag text-xs text-[color:var(--amber-brand)]">
           ── DISPATCH · 24/7
         </div>
@@ -46,11 +36,8 @@ function ContactPage() {
           Phones answered by humans, not bots. Most quotes returned within the
           hour.
         </p>
-      </div>
-    </section>
-    <section className="bg-[color:var(--pitch)] pb-24 pt-0 text-[color:var(--linen)]">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid gap-px bg-[color:var(--linen)]/10 md:grid-cols-2">
+
+        <div className="mt-16 grid gap-px bg-[color:var(--linen)]/10 md:grid-cols-2">
           {[
             {
               Icon: Phone,
@@ -102,6 +89,5 @@ function ContactPage() {
         </div>
       </div>
     </section>
-    </>
   );
 }
